@@ -36,6 +36,49 @@
       rel="stylesheet"
       type="text/css"
     />
+    <style>
+			.pattern-container {
+			text-align: center;
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 1em;
+		}
+
+		.title {
+			font-size: 1.6em;
+			text-align: left;
+			padding: 1em 0 0;
+		}
+
+		.subtitle {
+			font-size: 1.1em;
+			opacity: .8;
+			text-align: left;
+		}
+
+		.canvas-wrapper {
+			padding: 2em 0;
+		}
+
+		.password {
+			padding: 1em 0;
+		}
+
+		.controls-wrapper {
+			padding: 1em;
+			border: 1px solid #eee;
+			margin: 1em auto;
+			text-align: left;
+		}
+
+		.button-primary {
+			padding: 1em 1.3em;
+			background-color: #0c1e30;
+			color: #fff;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+		</style>
 
     <!--end::Global Stylesheets Bundle-->
     <script>
@@ -1209,6 +1252,53 @@
       <!--end::Modal dialog-->
     </div>
     <!--end::Modal - New Target-->
+    <div class="modal fade" id="kt_modal_schema" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-650px">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Modal header-->
+					<div class="modal-header" id="kt_modal_add_user_header">
+						<!--begin::Modal title-->
+						<h2 class="fw-bold">Schéma</h2>
+						<!--end::Modal title-->
+						<!--begin::Close-->
+						<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+							<i class="ki-duotone ki-cross fs-1">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>
+						</div>
+						<!--end::Close-->
+					</div>
+					<!--end::Modal header-->
+					<!--begin::Modal body-->
+					<div class="modal-body px-5 my-7">
+						<!--begin::Form-->
+						<form id="kt_modal_add_user_form" class="form" action="#">
+							
+								<div class='pattern-container'>
+									<div id='root'></div>
+								</div>
+							<!--begin::Actions-->
+							<div class="text-center pt-10">
+								<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Annuler</button>
+								<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+									<span class="indicator-label">Envoyer</span>
+									<span class="indicator-progress">Veuillez Patienter... 
+									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+								</button>
+							</div>
+							<!--end::Actions-->
+						</form>
+						<!--end::Form-->
+					</div>
+					<!--end::Modal body-->
+				</div>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
+		</div>
     <!--end::Drawers-->
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -1503,6 +1593,7 @@
                                       </div>
                                       <div class="col-md-6 d-flex mt-auto mb-2">
                                         <a
+                                          data-bs-toggle="modal" data-bs-target="#kt_modal_schema"
                                           href="javascript:void(0);"
                                           class="btn btn-light-primary w-100"
                                         >
@@ -1779,7 +1870,7 @@
     createAccordion();
   </script>
     <!--end::Global Javascript Bundle-->
-
+    <script src="/assets/js/pattern/vanilla.example.js"></script>
     <!--end::Javascript-->
   </body>
   <!--end::Body-->

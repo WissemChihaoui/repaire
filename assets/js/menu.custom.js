@@ -218,12 +218,7 @@ const menuItems = [
       icon: '<i class="ki-duotone ki-question-2 fs-2x" style="color:white"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>',
       label: 'Support technique',
       href: '/ticket/index.html'
-    },  
-    {
-      icon: '<i class="ki-duotone ki-element-plus fs-2x" style="color:white"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>',
-      label: 'Nouveautés',
-      href: '/blog/index.html'
-    },  
+    }, 
   ];
 
   

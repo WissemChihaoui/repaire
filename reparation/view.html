@@ -29,39 +29,51 @@
 		<link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<script src="/assets/js/libs/modernizr.js"></script>
-		<style type="text/css">
 
-			
-		
-			#signatureparent {
-				color:darkblue;
-				background-color:darkgrey;
-				/*max-width:600px;*/
-				padding:20px;
-			}
-			
-			/*This is the div within which the signature canvas is fitted*/
-			#signature {
-				border: 2px dotted black;
-				background-color:lightgrey;
-			}
-		
-			/* Drawing the 'gripper' for touch-enabled devices */ 
-			html.touch #content {
-				float:left;
-				width:92%;
-			}
-			html.touch #scrollgrabber {
-				float:right;
-				width:4%;
-				margin-right:2%;
-				background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAFCAAAAACh79lDAAAAAXNSR0IArs4c6QAAABJJREFUCB1jmMmQxjCT4T/DfwAPLgOXlrt3IwAAAABJRU5ErkJggg==)
-			}
-			html.borderradius #scrollgrabber {
-				border-radius: 1em;
-			}
-			 
+		<style>
+			.pattern-container {
+			text-align: center;
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 1em;
+		}
+
+		.title {
+			font-size: 1.6em;
+			text-align: left;
+			padding: 1em 0 0;
+		}
+
+		.subtitle {
+			font-size: 1.1em;
+			opacity: .8;
+			text-align: left;
+		}
+
+		.canvas-wrapper {
+			padding: 2em 0;
+		}
+
+		.password {
+			padding: 1em 0;
+		}
+
+		.controls-wrapper {
+			padding: 1em;
+			border: 1px solid #eee;
+			margin: 1em auto;
+			text-align: left;
+		}
+
+		.button-primary {
+			padding: 1em 1.3em;
+			background-color: #0c1e30;
+			color: #fff;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
 		</style>
+		
 
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
@@ -408,7 +420,7 @@
 														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-6 w-200px py-4" data-kt-menu="true">
 															<!--begin::Menu item-->
 															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3">Paiement</a>
+																<a href="javascript:void(0);" class="menu-link px-3" data-bs-target="#kt_modal_payment" data-bs-toggle="modal">Paiement</a>
 															</div>
 															<div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
             <!--begin::Menu item-->
@@ -638,17 +650,16 @@
 																<!--end::Details-->
 															</div>
 															<!--end::Row-->
-															
 														</div>
 														<!--end::Row-->
 													</div>
 													<!--end::Section-->
 												</div>
                                                 <div class="card-footer">
-                                                    <button class="btn btn-primary btn-sm">Schéma</button>    
-                                                    <button data-bs-target="#kt_modal_rapport_avant" data-bs-toggle="modal" class="btn btn-light-primary btn-sm">Rapport avant</button>    
-                                                    <button data-bs-target="#kt_modal_rapport_apres" data-bs-toggle="modal" class="btn btn-light-primary btn-sm">Rapport aprés </button>    
-                                                    <button class="btn btn-light-primary btn-sm">Attestation d'irréparabilité</button>    
+                                                    <button data-bs-toggle="modal" data-bs-target="#kt_modal_schema" class="btn btn-primary btn-sm">Schéma</button>    
+                                                    <button data-bs-target="#kt_modal_rapport_avant" data-bs-toggle="modal" class="btn btn-light-primary btn-sm d-none">Rapport avant</button>    
+                                                    <button data-bs-target="#kt_modal_rapport_apres" data-bs-toggle="modal" class="btn btn-light-primary btn-sm d-none">Rapport aprés </button>    
+                                                    <button class="btn btn-light-primary btn-sm d-none">Attestation d'irréparabilité</button>    
                                                 </div>
 												<!--end::Card body-->
 											</div>
@@ -1041,12 +1052,61 @@
 								
 								<!--end::Input group-->
 								<!--begin::Input group-->
-								<div id="signatureparent">
-								<div id="signature" ></div></div>
+								<canvas id="sig-canvas" width="620" height="160" class="border w-100">
+                                    Votre navigateur ne prend pas en charge les canevas, veuillez mettre à jour votre
+                                    navigateur.
+                                </canvas>
 								
 								<!--end::Input group-->
 							</div>
 							<!--end::Scroll-->
+							<!--begin::Actions-->
+							<div class="text-center pt-10">
+								<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Annuler</button>
+								<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+									<span class="indicator-label">Envoyer</span>
+									<span class="indicator-progress">Veuillez Patienter... 
+									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+								</button>
+							</div>
+							<!--end::Actions-->
+						</form>
+						<!--end::Form-->
+					</div>
+					<!--end::Modal body-->
+				</div>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
+		</div>
+		<div class="modal fade" id="kt_modal_schema" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-650px">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Modal header-->
+					<div class="modal-header" id="kt_modal_add_user_header">
+						<!--begin::Modal title-->
+						<h2 class="fw-bold">Schéma</h2>
+						<!--end::Modal title-->
+						<!--begin::Close-->
+						<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+							<i class="ki-duotone ki-cross fs-1">
+								<span class="path1"></span>
+								<span class="path2"></span>
+							</i>
+						</div>
+						<!--end::Close-->
+					</div>
+					<!--end::Modal header-->
+					<!--begin::Modal body-->
+					<div class="modal-body px-5 my-7">
+						<!--begin::Form-->
+						<form id="kt_modal_add_user_form" class="form" action="#">
+							
+								<div class='pattern-container'>
+									<div id='root'></div>
+								</div>
 							<!--begin::Actions-->
 							<div class="text-center pt-10">
 								<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Annuler</button>
@@ -1999,6 +2059,223 @@
 			</div>
 		</div>
 		<!--end::Modal - New Address-->
+		<!--begin::Modal - New Address-->
+		<div class="modal fade" id="kt_modal_payment" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered modal-xl">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Form-->
+					<form class="form" action="#" id="kt_modal_rapport_avant_form">
+						<!--begin::Modal header-->
+						<div class="modal-header" id="kt_modal_rapport_avant_header">
+							<!--begin::Modal title-->
+							<h4>Paiement</h4>
+							<!--end::Modal title-->
+							<!--begin::Close-->
+							<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+								<i class="ki-duotone ki-cross fs-1">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>
+							</div>
+							<!--end::Close-->
+						</div>
+						<!--end::Modal header-->
+						<!--begin::Modal body-->
+						<div class="modal-body py-10 px-lg-17">
+							<!--begin::Scroll-->
+							<div class="w-100">
+                              <!--begin::Order details-->
+                              <div
+                                class="card card-flush py-4 flex-row-fluid mb-10"
+                              >
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                  <div class="card-title">
+                                    <h2>Total : 0.00 TND</h2>
+                                  </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                  <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table
+                                      class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px"
+                                    >
+                                      <tbody class="fw-semibold text-gray-600">
+                                        <tr>
+                                          <td class="text-muted">
+                                            <div
+                                              class="d-flex align-items-center"
+                                            >
+                                              <i
+                                                class="ki-duotone ki-discount fs-2 me-2"
+                                              >
+                                                <span class="path1"></span>
+                                                <span class="path2"></span> </i
+                                              >Remise commerciale en pourcentage
+                                              %
+                                            </div>
+                                          </td>
+                                          <td class="fw-bold text-end">
+                                            <input
+                                              type="text"
+                                              class="form-control form-control"
+                                            />
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="text-muted">
+                                            <div
+                                              class="d-flex align-items-center"
+                                            >
+                                              <i
+                                                class="ki-duotone ki-discount fs-2 me-2"
+                                              >
+                                                <span class="path1"></span>
+                                                <span class="path2"></span> </i
+                                              >Remise commerciale en Euro
+                                            </div>
+                                          </td>
+                                          <td class="fw-bold text-end">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                            />
+                                            <span class="text-muted fs-7"
+                                              >(utilise le point (.) pour les
+                                              décimaux)</span
+                                            >
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <!--end::Table-->
+                                  </div>
+                                </div>
+                                <!--end::Card body-->
+                              </div>
+                              <!--end::Order details-->
+                              <!--begin::Order details-->
+                              <div
+                                class="card card-flush py-4 flex-row-fluid mb-10"
+                              >
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                  <div class="card-title">
+                                    <h2>Total aprés remise : 0.00 TND</h2>
+                                  </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                  <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table
+                                      class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px"
+                                    >
+                                      <tbody class="fw-semibold text-gray-600">
+                                        <tr>
+                                          <td class="text-muted">
+                                            <div
+                                              class="d-flex align-items-center required"
+                                            >
+                                              <i
+                                                class="ki-duotone ki-discount fs-2 me-2"
+                                              >
+                                                <span class="path1"></span>
+                                                <span class="path2"></span> </i
+                                              >Montant
+                                            </div>
+                                          </td>
+                                          <td class="fw-bold text-end">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                            />
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="text-muted">
+                                            <div
+                                              class="d-flex align-items-center required"
+                                            >
+                                              <i
+                                                class="ki-duotone ki-discount fs-2 me-2"
+                                              >
+                                                <span class="path1"></span>
+                                                <span class="path2"></span> </i
+                                              >Type
+                                            </div>
+                                          </td>
+                                          <td class="fw-bold text-end">
+                                            <select
+                                              class="form-select form-select-solid fw-bold"
+                                              data-kt-select2="true"
+                                              data-placeholder="Sélectionner une option"
+                                              data-allow-clear="true"
+                                            >
+                                              <option></option>
+                                              <option value="cash">
+                                                Espéce
+                                              </option>
+                                              <option value="cb">CB</option>
+                                              <option value="cheque">
+                                                Chéque
+                                              </option>
+                                              <option value="transfer">
+                                                Virement
+                                              </option>
+                                              <option value="paypal">
+                                                Paypal
+                                              </option>
+                                              <option value="credits">
+                                                Crédit / paiement en plusieurs
+                                                fois
+                                              </option>
+                                            </select>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <!--end::Table-->
+                                  </div>
+                                </div>
+                                <!--end::Card body-->
+                              </div>
+                              <!--end::Order details-->
+                              <div
+                                class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded p-3"
+                              >
+                                <h2 class="m-0">Total payé : 0 TND</h2>
+                                <h2 class="m-0">Reste : 0.00 TND</h2>
+                              </div>
+                            </div>
+							<!--end::Scroll-->
+						</div>
+						<!--end::Modal body-->
+						<!--begin::Modal footer-->
+						<div class="modal-footer flex-center">
+							<!--begin::Button-->
+							<button type="reset" id="kt_modal_rapport_avant_cancel" class="btn btn-light me-3">Annuler</button>
+							<!--end::Button-->
+							<!--begin::Button-->
+							<button type="submit" id="kt_modal_rapport_avant_submit" class="btn btn-primary">
+								<span class="indicator-label">Payer</span>
+								<span class="indicator-progress">Veuillez patienter... 
+								<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+							</button>
+							<!--end::Button-->
+						</div>
+						<!--end::Modal footer-->
+					</form>
+					<!--end::Form-->
+				</div>
+			</div>
+		</div>
+		<!--end::Modal - New Address-->
 		
 		<!--end::Drawers-->
 		<!--begin::Scrolltop-->
@@ -2021,155 +2298,9 @@
 		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<script src="/assets/js/libs/jquery.js"></script>
-		<script>
-/*  @preserve
-jQuery pub/sub plugin by Peter Higgins (dante@dojotoolkit.org)
-Loosely based on Dojo publish/subscribe API, limited in scope. Rewritten blindly.
-Original is (c) Dojo Foundation 2004-2010. Released under either AFL or new BSD, see:
-http://dojofoundation.org/license for more information.
-*/
-(function($) {
-	var topics = {};
-	$.publish = function(topic, args) {
-	    if (topics[topic]) {
-	        var currentTopic = topics[topic],
-	        args = args || {};
-	
-	        for (var i = 0, j = currentTopic.length; i < j; i++) {
-	            currentTopic[i].call($, args);
-	        }
-	    }
-	};
-	$.subscribe = function(topic, callback) {
-	    if (!topics[topic]) {
-	        topics[topic] = [];
-	    }
-	    topics[topic].push(callback);
-	    return {
-	        "topic": topic,
-	        "callback": callback
-	    };
-	};
-	$.unsubscribe = function(handle) {
-	    var topic = handle.topic;
-	    if (topics[topic]) {
-	        var currentTopic = topics[topic];
-	
-	        for (var i = 0, j = currentTopic.length; i < j; i++) {
-	            if (currentTopic[i] === handle.callback) {
-	                currentTopic.splice(i, 1);
-	            }
-	        }
-	    }
-	};
-})(jQuery);
-
-</script>
-		<script src="/assets/js/src/jSignature.js"></script>
-<script src="/assets/js/src/plugins/jSignature.CompressorBase30.js"></script>
-<script src="/assets/js/src/plugins/jSignature.CompressorSVG.js"></script>
-<script src="/assets/js/src/plugins/jSignature.UndoButton.js"></script> 
-<script src="/assets/js/src/plugins/signhere/jSignature.SignHere.js"></script> 
-<script>
-$(document).ready(function() {
-	
-	// This is the part where jSignature is initialized.
-	var $sigdiv = $("#signature").jSignature({'UndoButton':true})
-	
-	// All the code below is just code driving the demo. 
-	, $tools = $('#tools')
-	, $extraarea = $('#displayarea')
-	, pubsubprefix = 'jSignature.demo.'
-	
-	var export_plugins = $sigdiv.jSignature('listPlugins','export')
-	, chops = ['<span><b>Extract signature data as: </b></span><select>','<option value="">(select export format)</option>']
-	, name
-	for(var i in export_plugins){
-		if (export_plugins.hasOwnProperty(i)){
-			name = export_plugins[i]
-			chops.push('<option value="' + name + '">' + name + '</option>')
-		}
-	}
-	chops.push('</select><span><b> or: </b></span>')
-	
-	$(chops.join('')).bind('change', function(e){
-		if (e.target.value !== ''){
-			var data = $sigdiv.jSignature('getData', e.target.value)
-			$.publish(pubsubprefix + 'formatchanged')
-			if (typeof data === 'string'){
-				$('textarea', $tools).val(data)
-			} else if($.isArray(data) && data.length === 2){
-				$('textarea', $tools).val(data.join(','))
-				$.publish(pubsubprefix + data[0], data);
-			} else {
-				try {
-					$('textarea', $tools).val(JSON.stringify(data))
-				} catch (ex) {
-					$('textarea', $tools).val('Not sure how to stringify this, likely binary, format.')
-				}
-			}
-		}
-	}).appendTo($tools)
-
-	
-	$('<input type="button" value="Reset">').bind('click', function(e){
-		$sigdiv.jSignature('reset')
-	}).appendTo($tools)
-	
-	$('<div><textarea style="width:100%;height:7em;"></textarea></div>').appendTo($tools)
-	
-	$.subscribe(pubsubprefix + 'formatchanged', function(){
-		$extraarea.html('')
-	})
-
-	$.subscribe(pubsubprefix + 'image/svg+xml', function(data) {
-
-		try{
-			var i = new Image()
-			i.src = 'data:' + data[0] + ';base64,' + btoa( data[1] )
-			$(i).appendTo($extraarea)
-		} catch (ex) {
-
-		}
-		
-		var message = [
-			"If you don't see an image immediately above, it means your browser is unable to display in-line (data-url-formatted) SVG."
-			, "This is NOT an issue with jSignature, as we can export proper SVG document regardless of browser's ability to display it."
-			, "Try this page in a modern browser to see the SVG on the page, or export data as plain SVG, save to disk as text file and view in any SVG-capabale viewer."
-           ]
-		$( "<div>" + message.join("<br/>") + "</div>" ).appendTo( $extraarea )
-	});
-
-	$.subscribe(pubsubprefix + 'image/svg+xml;base64', function(data) {
-		var i = new Image()
-		i.src = 'data:' + data[0] + ',' + data[1]
-		$(i).appendTo($extraarea)
-		
-		var message = [
-			"If you don't see an image immediately above, it means your browser is unable to display in-line (data-url-formatted) SVG."
-			, "This is NOT an issue with jSignature, as we can export proper SVG document regardless of browser's ability to display it."
-			, "Try this page in a modern browser to see the SVG on the page, or export data as plain SVG, save to disk as text file and view in any SVG-capabale viewer."
-           ]
-		$( "<div>" + message.join("<br/>") + "</div>" ).appendTo( $extraarea )
-	});
-	
-	$.subscribe(pubsubprefix + 'image/png;base64', function(data) {
-		var i = new Image()
-		i.src = 'data:' + data[0] + ',' + data[1]
-		$('<span><b>As you can see, one of the problems of "image" extraction (besides not working on some old Androids, elsewhere) is that it extracts A LOT OF DATA and includes all the decoration that is not part of the signature.</b></span>').appendTo($extraarea)
-		$(i).appendTo($extraarea)
-	});
-	
-	$.subscribe(pubsubprefix + 'image/jsignature;base30', function(data) {
-		$('<span><b>This is a vector format not natively render-able by browsers. Format is a compressed "movement coordinates arrays" structure tuned for use server-side. The bonus of this format is its tiny storage footprint and ease of deriving rendering instructions in programmatic, iterative manner.</b></span>').appendTo($extraarea)
-	});
-
-	if (Modernizr.touch){
-		$('#scrollgrabber').height($('#content').height())		
-	}
-	
-})
-</script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+		<script src="/assets/js/signature.js"></script>
+		<script src="/assets/js/pattern/vanilla.example.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
