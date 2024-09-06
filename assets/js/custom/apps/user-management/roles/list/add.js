@@ -1,0 +1,117 @@
+"use strict";
+var KTUsersAddRole = (function () {
+  const t = document.getElementById("kt_modal_add_role"),
+    e = t.querySelector("#kt_modal_add_role_form"),
+    n = new bootstrap.Modal(t);
+  return {
+    init: function () {
+      (() => {
+        var o = FormValidation.formValidation(e, {
+          fields: {
+            role_name: {
+              validators: { notEmpty: { message: "Le nom du rôle est obligatoire" } },
+            },
+          },
+          plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap: new FormValidation.plugins.Bootstrap5({
+              rowSelector: ".fv-row",
+              eleInvalidClass: "",
+              eleValidClass: "",
+            }),
+          },
+        });
+        t
+          .querySelector('[data-kt-roles-modal-action="close"]')
+          .addEventListener("click", (t) => {
+            t.preventDefault(),
+              Swal.fire({
+                text: "Êtes-vous sûr de vouloir fermer ?",
+                icon: "warning",
+                showCancelButton: !0,
+                buttonsStyling: !1,
+                confirmButtonText: "Oui, fermez-la !",
+                cancelButtonText: "Non, retour",
+                customClass: {
+                  confirmButton: "btn btn-primary",
+                  cancelButton: "btn btn-active-light",
+                },
+              }).then(function (t) {
+                t.value && n.hide();
+              });
+          }),
+          t
+            .querySelector('[data-kt-roles-modal-action="cancel"]')
+            .addEventListener("click", (t) => {
+              t.preventDefault(),
+                Swal.fire({
+                  text: "Êtes-vous sûr de vouloir annuler ?",
+                  icon: "warning",
+                  showCancelButton: !0,
+                  buttonsStyling: !1,
+                  confirmButtonText: "Oui, annulez-la !",
+                  cancelButtonText: "Non, retour",
+                  customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: "btn btn-active-light",
+                  },
+                }).then(function (t) {
+                  t.value
+                    ? (e.reset(), n.hide())
+                    : "cancel" === t.dismiss &&
+                      Swal.fire({
+                        text: "Votre formulaire n'a pas été annulé !.",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "Ok, j'ai compris!",
+                        customClass: { confirmButton: "btn btn-primary" },
+                      });
+                });
+            });
+        const r = t.querySelector('[data-kt-roles-modal-action="submit"]');
+        r.addEventListener("click", function (t) {
+          t.preventDefault(),
+            o &&
+              o.validate().then(function (t) {
+                console.log("validated!"),
+                  "Valid" == t
+                    ? (r.setAttribute("data-kt-indicator", "on"),
+                      (r.disabled = !0),
+                      setTimeout(function () {
+                        r.removeAttribute("data-kt-indicator"),
+                          (r.disabled = !1),
+                          Swal.fire({
+                            text: "Le formulaire a été envoyé avec succès !",
+                            icon: "success",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, j'ai compris!",
+                            customClass: { confirmButton: "btn btn-primary" },
+                          }).then(function (t) {
+                            t.isConfirmed && n.hide();
+                          });
+                      }, 2e3))
+                    : Swal.fire({
+                        text: "Désolé, il semble que des erreurs aient été détectées, veuillez réessayer.",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "Ok, j'ai compris!",
+                        customClass: { confirmButton: "btn btn-primary" },
+                      });
+              });
+        });
+      })(),
+        (() => {
+          const t = e.querySelector("#kt_roles_select_all"),
+            n = e.querySelectorAll('[type="checkbox"]');
+          t.addEventListener("change", (t) => {
+            n.forEach((e) => {
+              e.checked = t.target.checked;
+            });
+          });
+        })();
+    },
+  };
+})();
+KTUtil.onDOMContentLoaded(function () {
+  KTUsersAddRole.init();
+});
